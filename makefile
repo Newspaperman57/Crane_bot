@@ -9,7 +9,7 @@ OBJECTS=$(addprefix $(OBJDIR)/,$(notdir $(SOURCES:.cpp=.o)))
 
 CC=g++
 CFLAGS=-c -Wall -g -std=c++11
-LDFLAGS=-lm 
+LDFLAGS=-lm -lSDL2 -lSDL2_image
 #-lSDL2 -lSDL2_image
 DEPFLAGS = -MMD $(DEPDIR)/$*.Td
 

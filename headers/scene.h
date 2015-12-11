@@ -9,7 +9,8 @@
 enum {
   SUCCES,
   FAILURE,
-  NOT_DONE
+  NOT_DONE,
+  DONE
 };
 
 enum FUNC{
@@ -47,7 +48,7 @@ public:
   int width; // Scene Width
 
   void Init(int height, int width, std::vector<Box> start, std::vector<Box> result, std::vector<  std::vector<int> > funcs);
-  int Tick(); // Returns false if this was last tick;
+  int Tick(int* currFunction, int* currTask);
   bool IsDone();
   int CallFunc(int func);
 };

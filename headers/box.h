@@ -3,10 +3,11 @@
 
 #include "pos.h"
 
-typedef struct _box{
+class Box{
+public:
   Pos pos;
-} Box;
+  bool compare(Box box2);
+};
 
-bool compare(Box box1, Box box2);
 
 #endif

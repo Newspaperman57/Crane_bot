@@ -30,29 +30,34 @@ int Crane::Grab(std::vector<Box> *box, int height) {
       i++;
     }
     if(highestBox == 0) {
-      printf("No room for box!");
+      printf("No room for box!\n");
     }
     (*box)[grabbed].pos.x = highestBox-1;
     closedGrab = false;
   } else { // Pick something up
     // Find box right underneath crane
-    int highestBox = height;
+    bool first = true;
+    int highestBox = -1;
     int i = 0;
     while((int)(*box).size() > i) {
       if((*box)[i].pos.y == pos.y)
-        if((*box)[i].pos.x < (*box)[highestBox].pos.x)
+        if(first || (*box)[i].pos.x < (*box)[highestBox].pos.x) {
           highestBox = i;
+          first = false;
+        }
       i++;
     }
     // If not box is present, don't set ClosedGrab
-    if(highestBox != height) {
-      // Move box to (0, height) to indicate that it's in the crane
+    if(highestBox != -1) {
+      // Move box to (0, 0) to indicate that it's in the crane
       (*box)[highestBox].pos.x = 0;
       (*box)[highestBox].pos.y = 0;
 
       // grabbed = box's entry
       grabbed = highestBox;
       closedGrab = true;
+    } else {
+      printf("No box found!\n");
     }
   }
   return 1;

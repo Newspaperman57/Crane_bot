@@ -6,7 +6,8 @@ void Scene::Init(int height, int width, std::vector<Box> start, std::vector<Box>
   box = start;
   functions = funcs;
   for (int i = 0; i < (int)funcs.size(); i++) {
-    functions[i][funcs[i].size()] = UNDEFINED;
+    if(funcs[i].size() > 0)
+      functions[i].push_back(UNDEFINED);
   }
   
   this->result = result;
@@ -16,20 +17,22 @@ void Scene::Init(int height, int width, std::vector<Box> start, std::vector<Box>
   stack.push_back((Pos){0,0});
 }
 
-int Scene::Tick() { // Returns false if this was last tick
-  // If the stack is empty or we have succeeded, return false
+int Scene::Tick(int* currFunction, int* currTask) {
   if(IsDone())
     return (int)SUCCES;
+
   if(stack.empty())
       return (int)FAILURE;
 
   // Go to stack and execute last entry if not null-pointer. If null-pointer, remove and take next. If stack is empty, return false.
-  while(functions[stack.back().x][stack.back().y] == UNDEFINED) { // Find entry which is not null-pointer
+  while(functions[stack.back().x][stack.back().y] == UNDEFINED) { // Find entry which is not undefined
     stack.pop_back();
     if(stack.empty())
-      return FAILURE;
+      return FAILURE; // No more commmands. We already checked if we solved the task, so we return FAILURE
   }
   
+  *currFunction = stack.back().x;
+  *currTask = stack.back().y;
   // Execute function
   int returnValue = CallFunc(functions[stack.back().x][stack.back().y]);
   // (x, y+1) into stack.
@@ -46,19 +49,23 @@ int Scene::CallFunc(int func) {
   switch(func) {
     case FUNC1:
       printf("Call function 1\n");
-      return 1;
+      return 0;
       break;
     case FUNC2:
-      return 2;
+      printf("Call function 2\n");
+      return 1;
       break;
     case FUNC3:
-      return 3;
+      printf("Call function 3\n");
+      return 2;
       break;
     case FUNC4:
-      return 4;
+      printf("Call function 4\n");
+      return 3;
       break;
     case FUNC5:
-      return 5;
+      printf("Call function 5\n");
+      return 4;
       break;
     case GRAB:
       printf("Grab\n");
@@ -79,12 +86,9 @@ bool Scene::IsDone() {
   // Go though box and compare to result and if all boxes have corrosponding box at the position, return true
   bool foundOne;
   for(int i = 0; i < (int)box.size(); i++) {
-    printf("Box at: %d x %d\n", box[i].pos.x, box[i].pos.y );
-  }
-  for(int i = 0; i < (int)box.size(); i++) {
     foundOne = false;
     for(int j = 0; j < (int)result.size(); j++) {
-      if(compare(box[i], result[j]))
+      if(box[i].compare(result[j]))
         foundOne = true;
     }
     if(!foundOne) {
