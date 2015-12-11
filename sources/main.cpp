@@ -1,3 +1,14 @@
+/*
+
+TO DO:
+Add input-parser to load levels without re-compiling
+Add feature to show program while it's running
+Add feature to reset run and edit program and re-run
+Add box showing goal
+Make crane animated with picking up boxes and moving left/right
+
+*/
+
 #include <cstdio>
 #include <string>
 
