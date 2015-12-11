@@ -32,9 +32,10 @@ int main() {
   //SDL_RenderClear(Renderer);  
 
   // SDL_CreateTextureFromSurface(Renderer, crateS);
-  SDL_Texture* crateT = IMG_LoadTexture(Renderer, "gfx/crate.png"); 
+  SDL_Texture* yellow_crate = IMG_LoadTexture(Renderer, "gfx/yellow_crate.png");
+  SDL_Texture* blue_crate   = IMG_LoadTexture(Renderer, "gfx/blue_crate.png"); 
   SDL_Texture* craneT = IMG_LoadTexture(Renderer, "gfx/crane.png"); 
-  if(crateT == NULL || craneT == NULL)  {
+  if(yellow_crate == NULL || blue_crate == NULL || craneT == NULL)  {
      printf("ERROR: %s", SDL_GetError());
   }
   int sceneHeigth = 8;
@@ -62,19 +63,19 @@ int main() {
   functions[3].push_back(GRAB);
   functions[3].push_back(LEFT);
 
-  start.push_back((Box){1,1});
-  start.push_back((Box){2,1});
-  start.push_back((Box){3,1});
-  start.push_back((Box){4,1});
-  start.push_back((Box){5,1});
-  start.push_back((Box){6,1});
+  start.push_back(Box(1,1, YELLOW));
+  start.push_back(Box(2,1, BLUE));
+  start.push_back(Box(3,1, YELLOW));
+  start.push_back(Box(4,1, BLUE));
+  start.push_back(Box(5,1, YELLOW));
+  start.push_back(Box(6,1, BLUE));
 
-  result.push_back((Box){4,0});
-  result.push_back((Box){5,0});
-  result.push_back((Box){6,0});
-  result.push_back((Box){4,2});
-  result.push_back((Box){5,2});
-  result.push_back((Box){6,2});
+  result.push_back(Box(4, 0, BLUE));
+  result.push_back(Box(5, 0, BLUE));
+  result.push_back(Box(6, 0, BLUE));
+  result.push_back(Box(4, 2, YELLOW));
+  result.push_back(Box(5, 2, YELLOW));
+  result.push_back(Box(6, 2, YELLOW));
 
   scene.Init(sceneHeigth, sceneWidth, start, result, functions); 
 
@@ -145,7 +146,14 @@ int main() {
       else 
         cratePos.x = crateBasePos.x+(CRATE_SIZE+40)*(scene.box[i].pos.y);
       cratePos.y = crateBasePos.y-CRATE_SIZE*(-scene.box[i].pos.x);
-      SDL_RenderCopy( Renderer, crateT, NULL, &cratePos );
+      switch(scene.box[i].color) {
+        case YELLOW: 
+          SDL_RenderCopy( Renderer, yellow_crate, NULL, &cratePos );
+          break;
+        case BLUE:
+          SDL_RenderCopy( Renderer, blue_crate, NULL, &cratePos );
+          break;
+      };
     }
 
     for(int i = 0; i < sceneWidth; i++) {

@@ -13,6 +13,11 @@ enum {
   DONE
 };
 
+enum {
+  BLUE,
+  YELLOW
+};
+
 enum FUNC{
   FUNC1,
   FUNC2,
